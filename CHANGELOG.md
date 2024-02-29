@@ -3,6 +3,139 @@ This file is a running track of new features and fixes to each version of the pa
 
 This project follows [Semantic Versioning](http://semver.org) guidelines.
 
+## v1.11.5
+### Fixed
+* Rust egg using the wrong Docker image, breaking Rust modding frameworks.
+
+## v1.11.4
+### Added
+* Added support for the `server.queryport` option on the Rust egg.
+* Added support for the Carbon modding framework to the Rust egg.
+
+### Changed
+* Upgraded to Laravel 10.
+* Sensitive data is no longer shown in the CopyOnClick toast notification.
+
+### Fixed
+* Allow SVGs to be edited in the server's file manager.
+* Properly validate the request body when creating a backup.
+* Fixed issue with schedules running at the wrong time when the panel utilized a timezone with non-hour offsets (such as `Australia/Darwin`).
+* Fixes the log directory when running the Panel in a container.
+* Fixes the permission name used to check if a user has permission to read files/folders.
+* Fixes the ability to unset a server's description through the client API.
+* Fixed the MassActionBar on the server's file manager blocking elements below it, preventing them from being interacted with.
+
+## v1.11.3
+### Changed
+* When updating a server's description through the client API, if no value is specified, the description will now remain unchanged.
+* When installing the Panel for the first time, the queue driver will now all default to `redis` instead of `sync`.
+
+### Fixed
+* `php artisan p:environment:mail` not correctly setting the right variable for `MAIL_FROM_ADDRESS`.
+* Fixed the conflict state rendering on the UI for a server showing `reinstall_failed` as `restoring_backup`.
+* Fixed the unknown column `uuid` error when jobs fail, causing them not to get stored correctly.
+* Fixed the server task endpoints in the client API not allowing `sequence_id` and `continue_on_failure` to be set.
+
+## v1.11.2
+### Changed
+* Telemetry no longer sends a map of Egg and Nest UUIDs to the number of servers using them.
+* Increased the timeout for the decompress files endpoint in the client API from 15 seconds to 15 minutes.
+
+### Fixed
+* Fixed Panel Docker image having a `v` prefix in the version displayed in the admin area.
+* Fixed emails using the wrong queue name, causing them to not be sent.
+* Fixed the settings keys used for configuring SMTP settings, causing settings to not save properly.
+* Fixed the `MAIL_EHLO_DOMAIN` environment variable not being properly backwards compatible with the old `SERVER_NAME` variable.
+
+## v1.11.1
+### Fixed
+* Fixed Panel Docker image showing `canary` as it's version.
+
+## v1.11.0
+### Changed (since 1.10.4)
+* Changed minimum PHP version requirement from `7.4` to `8.0`.
+* Upgraded from Laravel 8 to Laravel 9.
+* This release requires Wings v1.11.x in order for Server Transfers to work.
+* `MB` byte suffixes are now displayed as `MiB` to more accurately reflect the actual value.
+* Server re-installation failures are tracked independently of the initial installation process.
+
+### Fixed (since 1.10.4)
+* Node maintenance mode now properly blocks access to servers.
+* Fixed the length validation on the Minecraft Forge egg.
+* Fixed the password in the JDBC string not being properly URL encoded.
+* Fixed an issue where Wings would throw a validation error while attempting to upload activity logs.
+* Properly handle a missing `Content-Length` header in the response from the daemon.
+* Ensure activity log properties are always returned as an object instead of an empty array.
+
+### Added (since 1.10.4)
+* Added the `server:settings.description` activity log event for when a server description is changed.
+* Added the ability to cancel file uploads in the file manager for a server.
+* Added a telemetry service to collect anonymous metrics from the panel, this feature is *enabled* by default and can be toggled using the `PTERODACTYL_TELEMETRY_ENABLED` environment variable.
+
+## v1.11.0-rc.2
+### Changed
+* `MB` byte suffixes are now displayed as `MiB` to more accurately reflect the actual value.
+* Server re-installation failures are tracked independently of the initial installation process.
+
+### Fixed
+* Properly handle a missing `Content-Length` header in the response from the daemon.
+* Ensure activity log properties are always returned as an object instead of an empty array.
+
+### Added
+* Added the `server:settings.description` activity log event for when a server description is changed.
+* Added the ability to cancel file uploads in the file manager for a server.
+* Added a telemetry service to collect anonymous metrics from the panel, this feature is disabled by default and can be toggled using the `PTERODACTYL_TELEMETRY_ENABLED` environment variable.
+
+## v1.11.0-rc.1
+### Changed
+* Changed minimum PHP version requirement from `7.4` to `8.0`.
+* Upgraded from Laravel 8 to Laravel 9.
+* This release requires Wings v1.11.x in order for Server Transfers to work.
+
+### Fixed
+* Node maintenance mode now properly blocks access to servers.
+* Fixed the length validation on the Minecraft Forge egg.
+* Fixed the password in the JDBC string not being properly URL encoded.
+* Fixed an issue where Wings would throw a validation error while attempting to upload activity logs.
+
+## v1.10.4
+### Fixed
+* Fixed an issue where subusers could be given permissions that are not actually registered or used.
+* Fixed an issue where node FQDNs could not just be IP addresses.
+
+### Changed
+* Change maximum number of API keys per user from `10` to `25`.
+* Change byte unit prefix from `B` to `iB` to better reflect our usage of base 2 (multiples of 1024).
+
+## v1.10.3
+### Fixed
+* S3 Backup driver now supports Cloudflare R2.
+* Node FQDNs can now be used with AAAA records with no A records present.
+* Server transfers can no longer be initiated if the server is being installed, transferred, or restoring a backup.
+* Fixed an issue relating to the use of arrays in the `config_files` field with eggs.
+* Fixed `oom_disabled` not being mapped in the Application API when creating a new server.
+
+### Added
+* File manager now supports selecting multiple files for upload (when using the upload button).
+* Added a configuration option for specifying the S3 storage class for backups.
+
+### Changed
+* Servers will now show the current uptime when the server is starting rather than only showing when the server is marked as online.
+
+## v1.10.2
+### Fixed
+* Fixes a rendering issue with egg descriptions in the admin area
+* Fixes the page title on the SSH Keys page
+
+### Changed
+* Additional validation rules will now show a toggle switch rather than an input when editing server variables
+* The eggs endpoint will now always return an empty JSON object for the `config_files` field, even if the field is completely empty
+
+### Added
+* Adds a `Force Outgoing IP` option for eggs that can be used to ensure servers making outgoing connections use their allocation IP rather than the node's primary ip
+* Adds options to configure sending of email (re)install notifications
+* Add an option to configure the part size for backups uploaded to S3
+
 ## v1.10.1
 ### Fixed
 * Fixes a surprise `clock()` function that was used for debugging and should not have made it into the release. This was causing activity events to not properly sync between the Panel and Wings.

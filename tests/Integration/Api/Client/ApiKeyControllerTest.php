@@ -52,7 +52,7 @@ class ApiKeyControllerTest extends ClientApiIntegrationTestCase
         /** @var \Pterodactyl\Models\User $user */
         $user = User::factory()->create();
 
-        // Small sub-test to ensure we're always comparing the  number of keys to the
+        // Small subtest to ensure we're always comparing the  number of keys to the
         // specific logged in account, and not just the total number of keys stored in
         // the database.
         ApiKey::factory()->times(10)->create([
@@ -96,16 +96,17 @@ class ApiKeyControllerTest extends ClientApiIntegrationTestCase
     }
 
     /**
-     * Test that no more than 5 API keys can exist at any one time for an account. This prevents
+     * Test that no more than 25 API keys can exist at any one time for an account. This prevents
      * a DoS attack vector against the panel.
      *
      * @see https://github.com/pterodactyl/panel/security/advisories/GHSA-pjmh-7xfm-r4x9
+     * @see https://github.com/pterodactyl/panel/issues/4394
      */
-    public function testNoMoreThanFiveApiKeysCanBeCreatedForAnAccount()
+    public function testApiKeyLimitIsApplied()
     {
         /** @var \Pterodactyl\Models\User $user */
         $user = User::factory()->create();
-        ApiKey::factory()->times(5)->for($user)->create([
+        ApiKey::factory()->times(25)->for($user)->create([
             'key_type' => ApiKey::TYPE_ACCOUNT,
         ]);
 
@@ -217,7 +218,7 @@ class ApiKeyControllerTest extends ClientApiIntegrationTestCase
     }
 
     /**
-     * Tests that an application API key also belonging to the logged in user cannot be
+     * Tests that an application API key also belonging to the logged-in user cannot be
      * deleted through this endpoint if it exists.
      */
     public function testApplicationApiKeyCannotBeDeleted()
@@ -240,7 +241,7 @@ class ApiKeyControllerTest extends ClientApiIntegrationTestCase
      * Provides some different IP address combinations that can be used when
      * testing that we accept the expected IP values.
      */
-    public function validIPAddressDataProvider(): array
+    public static function validIPAddressDataProvider(): array
     {
         return [
             [[]],

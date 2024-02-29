@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import ContentBox from '@/components/elements/ContentBox';
 import SpinnerOverlay from '@/components/elements/SpinnerOverlay';
 import FlashMessageRender from '@/components/FlashMessageRender';
@@ -25,7 +25,7 @@ export default () => {
     }, [error]);
 
     return (
-        <PageContentBlock title={'Account API'}>
+        <PageContentBlock title={'SSH Keys'}>
             <FlashMessageRender byKey={'account'} />
             <div css={tw`md:flex flex-nowrap my-10`}>
                 <ContentBox title={'Add SSH Key'} css={tw`flex-none w-full md:w-1/2`}>
